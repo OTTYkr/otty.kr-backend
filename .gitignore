@@ -1,0 +1,4 @@
+.env
+venv/
+com_logo/
+.idea/
