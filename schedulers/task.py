@@ -6,7 +6,7 @@ from schedulers.stock import GetStockRankModule
 class OttyTask:
     def __init__(self):
         # 배경 스케줄러 생성
-        self.scheduler = BackgroundScheduler()
+        self.scheduler = BackgroundScheduler({'apscheduler.timezone': 'UTC'})
         self.StockRankModule = GetStockRankModule()
         # 작업 스케줄링
         self.scheduler.add_job(self.do_task, 'cron', minute='*/1')
