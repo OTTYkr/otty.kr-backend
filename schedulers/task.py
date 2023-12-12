@@ -9,7 +9,7 @@ class OttyTask:
         self.scheduler = BackgroundScheduler({'apscheduler.timezone': 'UTC'})
         self.StockRankModule = GetStockRankModule()
         # 작업 스케줄링
-        self.scheduler.add_job(self.do_task, 'cron', minute='*/1')
+        self.scheduler.add_job(self.do_task, 'cron', minute='*/30')
 
     def do_task(self):
         # Cron 작업을 수행할 코드 작성
