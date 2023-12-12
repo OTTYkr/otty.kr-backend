@@ -2,3 +2,4 @@
 venv/
 com_logo/
 .idea/
+.DS_Store

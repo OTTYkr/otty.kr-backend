@@ -9,7 +9,7 @@ app = FastAPI()
 engine = EngineConn()
 session = engine.sessionmaker()
 
-app.mount("/com_logo", StaticFiles(directory="com_logo"), name="static")
+app.mount("/public", StaticFiles(directory="public"), name="static")
 
 @app.get('/')
 async def main():
