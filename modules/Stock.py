@@ -21,8 +21,8 @@ opener = urllib.request.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 urllib.request.install_opener(opener)
 
-if not os.path.isdir('../public/com_logo/'):
-    os.mkdir('../public/com_logo/')
+if not os.path.isdir('../public/com_logo'):
+    os.mkdir('../public/com_logo')
 
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
