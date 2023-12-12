@@ -1,14 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from database import EngineConn
 from models import Finance, Stock_Rank
 from schedulers.task import OttyTask
+from sqlalchemy.orm import Session
 
 
 app = FastAPI()
 
 engine = EngineConn()
 session = engine.sessionmaker()
+
+
+def get_db():
+    db = session()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 # 공유 폴더 접근 가능하게
 app.mount("/public", StaticFiles(directory="public"), name="static")
@@ -30,9 +40,11 @@ async def main():
     return "OTTY API Server"
 
 @app.get('/news/investing')
-async def api_news_investing():
-    return session.query(Finance).order_by(Finance.date.desc()).limit(10).all()
+async def api_news_investing(db: Session = Depends(get_db)):
+    #return session.query(Finance).order_by(Finance.date.desc()).limit(10).all()
+    return db.query(Finance).order_by(Finance.date.desc()).limit(10).all()
 
 @app.get('/stock_rank')
-async def api_stock_rank():
-    return session.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()
+async def api_stock_rank(db: Session = Depends(get_db)):
+    #return session.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()
+    return db.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()

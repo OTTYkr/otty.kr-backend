@@ -32,3 +32,6 @@ archive.zip
 *~
 .*.sw?
 .cache
+
+# 공개 폴더
+public/

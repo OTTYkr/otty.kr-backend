@@ -40,15 +40,17 @@ class GetStockRankModule:
 
         self.dollar = 0
         self.urls = ['https://companiesmarketcap.com/', 'https://companiesmarketcap.com/page/2/']
-        self.data = []
 
     def start_module(self):
         self.upbit_get_usd_krw()
-        self.get_stock_rank()
+        data = self.get_stock_rank()
 
         now_date = datetime.now(pytz.timezone('Asia/Seoul')).strftime("%Y/%m/%d %H:%M:%S")
 
-        for d in self.data:
+        # DB 세션 생성
+        db = self.session()
+
+        for d in data:
             if not os.path.isfile('./../public/com_logo/' + d[2] + '.webp'):
                 try:
                     urllib.request.urlretrieve('https://companiesmarketcap.com/img/company-logos/64/' + d[2] + '.webp',
@@ -56,16 +58,15 @@ class GetStockRankModule:
                 except:
                     pass
 
-            t = self.session.query(exists().where(Stock_Rank.code == d[2])).scalar()
+            t = db.query(exists().where(Stock_Rank.code == d[2])).scalar()
 
             if t:  # DB에 있다면
-                stock_data = self.session.query(Stock_Rank).where(Stock_Rank.code == d[2]).first()
+                stock_data = db.query(Stock_Rank).where(Stock_Rank.code == d[2]).first()
                 stock_data.market_cap = d[3]
                 stock_data.price = d[4]
                 stock_data.day_change = d[5]
                 stock_data.date = now_date
                 stock_data.dollar = self.dollar
-                self.session.commit()
             else:  # DB에 없다면
                 stock_data = Stock_Rank(
                     name=d[1],
@@ -77,8 +78,10 @@ class GetStockRankModule:
                     date=now_date,
                     dollar=self.dollar,
                 )
-                self.session.add(stock_data)
-                self.session.commit()
+                db.add(stock_data)
+
+        db.commit()
+        db.close()
 
     def upbit_get_usd_krw(self):
         url = 'https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD'
@@ -86,6 +89,7 @@ class GetStockRankModule:
         self.dollar = exchange[0]['basePrice']
 
     def get_stock_rank(self):
+        data = []
         for url in self.urls:
             r = requests.get(url)
             html = r.text
@@ -136,6 +140,7 @@ class GetStockRankModule:
                     row.append(text)
                 idx += 1
                 if idx == 6:
-                    self.data.append(row)
+                    data.append(row)
                     row = []
                     idx = 0
+        return data
