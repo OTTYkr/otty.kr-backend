@@ -7,8 +7,10 @@ charset-normalizer==3.3.2
 click==8.1.7
 exceptiongroup==1.2.0
 fastapi==0.104.1
+gunicorn==21.2.0
 h11==0.14.0
 idna==3.6
+packaging==23.2
 pydantic==2.5.2
 pydantic_core==2.14.5
 PyMySQL==1.1.0

@@ -21,8 +21,8 @@ opener = urllib.request.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 urllib.request.install_opener(opener)
 
-if not os.path.isdir('./../public/com_logo/'):
-    os.mkdir('./../public/com_logo/')
+if not os.path.isdir('../public/com_logo/'):
+    os.mkdir('../public/com_logo/')
 
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
@@ -102,10 +102,10 @@ now_date = datetime.now(pytz.timezone('Asia/Seoul')).strftime("%Y/%m/%d %H:%M:%S
 dollar = upbit_get_usd_krw()
 
 for d in data:
-    if not os.path.isfile('./../public/com_logo/' + d[2] + '.webp'):
+    if not os.path.isfile('../public/com_logo/' + d[2] + '.webp'):
         try:
             urllib.request.urlretrieve('https://companiesmarketcap.com/img/company-logos/64/' + d[2] + '.webp',
-                                       "./../public/com_logo/" + d[2] + '.webp')
+                                       "../public/com_logo/" + d[2] + '.webp')
         except:
             pass
 
