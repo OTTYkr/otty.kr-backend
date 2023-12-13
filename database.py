@@ -27,7 +27,7 @@ class EngineConn:
         self.engine = create_engine(DB_URL, pool_recycle=500)
 
     def sessionmaker(self):
-        session = sessionmaker(autoflush=False, bind=self.engine)
+        session = sessionmaker(bind=self.engine)
         #session = Session()
         return session
 

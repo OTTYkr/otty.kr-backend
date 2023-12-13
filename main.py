@@ -1,10 +1,14 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Response
 from fastapi.staticfiles import StaticFiles
 from database import EngineConn
 from models import Finance, Stock_Rank
 from schedulers.task import OttyTask
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
+from typing import List, Optional
+import datetime
 
+# 실행 방법 : 터미널 gunicorn --bind 0:8000 main:app --worker-class uvicorn.workers.UvicornWorker
 
 app = FastAPI()
 
@@ -36,15 +40,25 @@ async def shutdown_event():
     my_task.stop()
 
 @app.get('/')
-async def main():
-    return "OTTY API Server"
+async def main(response: Response):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
+    return "오티 - 오늘의 티커"
 
-@app.get('/news/investing')
-async def api_news_investing(db: Session = Depends(get_db)):
-    #return session.query(Finance).order_by(Finance.date.desc()).limit(10).all()
+class NewsItem(BaseModel):
+    id: int
+    provider: str
+    post_num: int
+    title: str
+    date: datetime.datetime
+    content: str
+
+
+@app.get('/news/investing', response_model=List[NewsItem])
+async def api_news_investing(response: Response, db: Session = Depends(get_db)):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
     return db.query(Finance).order_by(Finance.date.desc()).limit(10).all()
 
 @app.get('/stock_rank')
-async def api_stock_rank(db: Session = Depends(get_db)):
-    #return session.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()
+async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
     return db.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()
