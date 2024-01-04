@@ -111,4 +111,4 @@ class YahooScreener:
 
 if __name__ == "__main__":
     screener = YahooScreener()
-    screener.get_screener()
+    screener.start_module()
