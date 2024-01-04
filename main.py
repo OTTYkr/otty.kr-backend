@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Response
 from fastapi.staticfiles import StaticFiles
 from database import EngineConn
-from models import Finance, Stock_Rank
+from models import Finance, Stock_Rank, KrCapRank
 from schedulers.task import OttyTask
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -42,7 +42,7 @@ async def shutdown_event():
 @app.get('/')
 async def main(response: Response):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
-    return "오티 - 오늘의 티커"
+    return "오티 - 오늘의 티커 v1"
 
 class NewsItem(BaseModel):
     id: int
@@ -62,3 +62,9 @@ async def api_news_investing(response: Response, db: Session = Depends(get_db)):
 async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
     return db.query(Stock_Rank).order_by(Stock_Rank.market_cap.desc()).limit(100).all()
+
+
+@app.get('/kr_cap_rank')
+async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
+    return db.query(KrCapRank).order_by(KrCapRank.market_cap.desc()).limit(100).all()
