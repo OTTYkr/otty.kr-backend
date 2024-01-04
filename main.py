@@ -42,7 +42,7 @@ async def shutdown_event():
 @app.get('/')
 async def main(response: Response):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
-    return "오티 - 오늘의 티커 v1"
+    return "오티 - 오늘의 티커 v1.0"
 
 class NewsItem(BaseModel):
     id: int
