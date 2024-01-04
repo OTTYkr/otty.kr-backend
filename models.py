@@ -1,4 +1,4 @@
-from sqlalchemy import Column, TEXT, INT, VARCHAR, DATETIME, FLOAT
+from sqlalchemy import Column, TEXT, INT, VARCHAR, DATETIME, FLOAT, BIGINT
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -27,3 +27,17 @@ class Stock_Rank(Base):
     country = Column(VARCHAR, nullable=False)
     date = Column(DATETIME, nullable=True)
     dollar = Column(FLOAT, nullable=True)
+
+
+class KrCapRank(Base):
+    __tablename__ = "kr_cap_rank"
+
+    id = Column(INT, nullable=False, autoincrement=True, primary_key=True)
+    exchange = Column(VARCHAR, nullable=False)
+    symbol = Column(VARCHAR, nullable=False)
+    name = Column(VARCHAR, nullable=False)
+    market_price = Column(INT, nullable=True)
+    market_change = Column(INT, nullable=True)
+    market_change_percent = Column(FLOAT, nullable=True)
+    shares_outstanding = Column(BIGINT, nullable=True)
+    market_cap = Column(BIGINT, nullable=True)
