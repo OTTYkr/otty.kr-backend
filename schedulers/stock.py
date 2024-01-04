@@ -37,7 +37,6 @@ class GetStockRankModule:
             'Canada': '캐나다', 'Argentina': '아르헨티나', 'Norway': '노르웨이',
             'Hong Kong': '홍콩', 'Brazil': '브라질'
         }
-
         self.dollar = 0
         self.urls = ['https://companiesmarketcap.com/', 'https://companiesmarketcap.com/page/2/']
 

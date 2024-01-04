@@ -1,6 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 from schedulers.stock import GetStockRankModule
+from schedulers.yahoo_screener import YahooScreener
 
 
 class OttyTask:
@@ -8,8 +9,13 @@ class OttyTask:
         # 배경 스케줄러 생성
         self.scheduler = BackgroundScheduler({'apscheduler.timezone': 'UTC'})
         self.StockRankModule = GetStockRankModule()
+        self.KrCapRankModule = YahooScreener()
         # 작업 스케줄링
         self.scheduler.add_job(self.do_task, 'cron', minute='*/30')
+        self.scheduler.add_job(self.get_kr_cap_rank, 'cron', minute='*/5')
+
+    def get_kr_cap_rank(self):
+        self.KrCapRankModule.start_module()
 
     def do_task(self):
         # Cron 작업을 수행할 코드 작성
