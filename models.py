@@ -1,4 +1,4 @@
-from sqlalchemy import Column, TEXT, INT, VARCHAR, DATETIME, FLOAT, BIGINT
+from sqlalchemy import Column, TEXT, INT, VARCHAR, DATETIME, FLOAT, BIGINT, BOOLEAN
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -51,3 +51,4 @@ class KrStocks(Base):
     regular_price = Column(INT, nullable=True)
     change_per = Column(FLOAT, nullable=True)
     market_cap = Column(BIGINT, nullable=True)
+    islogo = Column(BOOLEAN, nullable=True)
