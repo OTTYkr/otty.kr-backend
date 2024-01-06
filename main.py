@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional
 import datetime
+from sqlalchemy.sql import *
 
 # 실행 방법 : 터미널 gunicorn --bind 0:8000 main:app --worker-class uvicorn.workers.UvicornWorker
 
@@ -74,3 +75,10 @@ async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
 async def kr_stocks_rank(response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
     return db.query(KrStocks).order_by(KrStocks.market_cap.desc()).limit(100).all()
+
+
+@app.get('/kr_stock/{symbol}')
+async def kr_stock_symbol(symbol: str, response: Response, db: Session = Depends(get_db)):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
+
+    return db.query(KrStocks).filter_by(**{'symbol': symbol}).first()
