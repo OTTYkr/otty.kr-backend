@@ -13,9 +13,9 @@ class OttyTask:
         self.KrCapRankModule = YahooScreener()
         self.TradingViewModule = TradingViewScraper()
         # 작업 스케줄링
+        self.scheduler.add_job(self.get_kr_stocks, 'cron', minute='*/1')
         self.scheduler.add_job(self.do_task, 'cron', minute='*/30')
         self.scheduler.add_job(self.get_kr_cap_rank, 'cron', minute='*/5')
-        self.scheduler.add_job(self.get_kr_stocks, 'cron', minute='*/5')
 
     def get_kr_stocks(self):
         self.TradingViewModule.get_data()
