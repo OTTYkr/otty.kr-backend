@@ -20,7 +20,7 @@ class TradingViewScraper:
         self.krx = fdr.StockListing('KRX')
         self.krx_code = {}
         for d in self.krx.itertuples():
-            self.krx_code[d.Code] = d.Name
+            self.krx_code[d.Code] = [d.Name, d.Market]
 
         self.url = 'https://www.tradingview.com/markets/stocks-korea/market-movers-large-cap/'
 
@@ -37,7 +37,8 @@ class TradingViewScraper:
             tds = tr.find_all('td')
 
             symbol = tds[0].find('a').text
-            name = self.krx_code[symbol]
+            name = self.krx_code[symbol][0]
+            exchange = self.krx_code[symbol][1]
             market_cap = tds[1].text.split(' ')[0]
             if 'T' in market_cap:
                 market_cap = market_cap.replace("T", "")
@@ -78,6 +79,7 @@ class TradingViewScraper:
                     change_per=change_per,
                     market_cap=market_cap,
                     islogo=logo_get,
+                    exchange=exchange,
                 )
                 db.add(stock_data)
 

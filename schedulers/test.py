@@ -88,5 +88,9 @@ class TradingViewScraper:
 
 
 if __name__ == "__main__":
-    t = TradingViewScraper()
-    t.get_data()
+    #t = TradingViewScraper()
+    #t.get_data()
+    krx = fdr.StockListing('KRX')
+    krx_code = {}
+    for d in krx.itertuples():
+        print(d)
