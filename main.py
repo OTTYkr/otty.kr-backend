@@ -73,4 +73,4 @@ async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
 @app.get('/kr_stocks')
 async def kr_stocks_rank(response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
-    return db.query(KrCapRank).order_by(KrStocks.market_cap.desc()).limit(100).all()
+    return db.query(KrStocks).order_by(KrStocks.market_cap.desc()).limit(100).all()
