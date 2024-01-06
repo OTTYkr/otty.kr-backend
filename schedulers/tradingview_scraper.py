@@ -50,11 +50,6 @@ class TradingViewScraper:
                 market_cap = int(float(market_cap) * 1000000)
             regular_price = int(tds[2].text.split(' ')[0])
             change_per = float(tds[3].text.replace("%", "").replace("−", "-"))
-            print(symbol)
-            print(name)
-            print(market_cap)
-            print(regular_price)
-            print(change_per)
 
             t = db.query(exists().where(KrStocks.symbol == symbol)).scalar()
             if t:  # DB에 있다면
@@ -77,7 +72,7 @@ class TradingViewScraper:
                 logo_url = tds[0].find('img')['src']
             except TypeError:
                 continue
-            logo_path = './../public/kr_stocks/' + symbol + '.svg'
+            logo_path = './public/kr_stocks/' + symbol + '.svg'
             if not os.path.isfile(logo_path):
                 svg = requests.get(logo_url).text
                 with open(logo_path, 'w') as file:
