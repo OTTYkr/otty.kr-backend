@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Response
 from fastapi.staticfiles import StaticFiles
 from database import EngineConn
-from models import Finance, Stock_Rank, KrCapRank
+from models import Finance, Stock_Rank, KrCapRank, KrStocks
 from schedulers.task import OttyTask
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -68,3 +68,9 @@ async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
 async def api_stock_rank(response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
     return db.query(KrCapRank).order_by(KrCapRank.market_cap.desc()).limit(100).all()
+
+
+@app.get('/kr_stocks')
+async def kr_stocks_rank(response: Response, db: Session = Depends(get_db)):
+    response.headers['content-type'] = 'application/json; charset=utf-8;'
+    return db.query(KrCapRank).order_by(KrStocks.market_cap.desc()).limit(100).all()
