@@ -13,8 +13,8 @@ class TradingViewScraper:
         self.session = self.engine.sessionmaker()
 
         # 이미지 저장할 폴더가 없다면 생성
-        if not os.path.isdir('./../public/kr_stocks/'):
-            os.mkdir('./../public/kr_stocks/')
+        #if not os.path.isdir('./public/kr_stocks/'):
+            #os.mkdir('./public/kr_stocks/')
 
         # 상장 종목 목록 가져오기
         self.krx = fdr.StockListing('KRX')
