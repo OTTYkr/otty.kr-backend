@@ -2,6 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 from schedulers.stock import GetStockRankModule
 from schedulers.yahoo_screener import YahooScreener
+from schedulers.tradingview_scraper import TradingViewScraper
 
 
 class OttyTask:
@@ -10,9 +11,14 @@ class OttyTask:
         self.scheduler = BackgroundScheduler({'apscheduler.timezone': 'UTC'})
         self.StockRankModule = GetStockRankModule()
         self.KrCapRankModule = YahooScreener()
+        self.TradingViewModule = TradingViewScraper()
         # 작업 스케줄링
         self.scheduler.add_job(self.do_task, 'cron', minute='*/30')
         self.scheduler.add_job(self.get_kr_cap_rank, 'cron', minute='*/5')
+        self.scheduler.add_job(self.get_kr_stocks, 'cron', minute='*/5')
+
+    def get_kr_stocks(self):
+        self.TradingViewModule.get_data()
 
     def get_kr_cap_rank(self):
         self.KrCapRankModule.start_module()

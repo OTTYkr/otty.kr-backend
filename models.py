@@ -41,3 +41,13 @@ class KrCapRank(Base):
     market_change_percent = Column(FLOAT, nullable=True)
     shares_outstanding = Column(BIGINT, nullable=True)
     market_cap = Column(BIGINT, nullable=True)
+
+class KrStocks(Base):
+    __tablename__ = "kr_stocks"
+
+    id = Column(INT, nullable=False, autoincrement=True, primary_key=True)
+    symbol = Column(VARCHAR, nullable=False)
+    name = Column(VARCHAR, nullable=False)
+    regular_price = Column(INT, nullable=True)
+    change_per = Column(FLOAT, nullable=True)
+    market_cap = Column(BIGINT, nullable=True)
