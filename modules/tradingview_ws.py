@@ -82,6 +82,8 @@ class TradingViewWebsocket:
                         data['가격변화'] = dl['ch']
                     if 'chp' in dl:
                         data['가격변화율'] = dl['chp']
+                    if 'bid' in dl:
+                        data['현재가'] = dl['bid']
 
         '''
         for d in data:
