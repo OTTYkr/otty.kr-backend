@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import datetime
 from sqlalchemy.sql import *
+from modules.tradingview_ws import TradingViewWebsocket
 
 # 실행 방법 : 터미널 gunicorn --bind 0:8000 main:app --worker-class uvicorn.workers.UvicornWorker
 
@@ -15,6 +16,8 @@ app = FastAPI()
 
 engine = EngineConn()
 session = engine.sessionmaker()
+
+TV_WS = TradingViewWebsocket()
 
 
 def get_db():
@@ -80,5 +83,9 @@ async def kr_stocks_rank(response: Response, db: Session = Depends(get_db)):
 @app.get('/kr_stock/{symbol}')
 async def kr_stock_symbol(symbol: str, response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
+    info = TV_WS.get_kr_data(str(symbol))
+    return {
+        'meta': db.query(KrStocks).filter_by(**{'symbol': symbol}).first(),
+        'info': info,
+    }
 
-    return db.query(KrStocks).filter_by(**{'symbol': symbol}).first()
