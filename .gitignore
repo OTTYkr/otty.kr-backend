@@ -35,3 +35,6 @@ archive.zip
 
 # 공개 폴더
 public/
+
+# 테스트 파일
+test.py

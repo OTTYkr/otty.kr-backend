@@ -53,3 +53,4 @@ class KrStocks(Base):
     market_cap = Column(BIGINT, nullable=True)
     islogo = Column(BOOLEAN, nullable=True)
     exchange = Column(VARCHAR, nullable=True)
+    summary = Column(TEXT, nullable=True)

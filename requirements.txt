@@ -50,4 +50,5 @@ uvicorn==0.24.0.post1
 webdriver-manager==4.0.1
 webencodings==0.5.1
 websocket-client==1.7.0
+wikipedia==1.4.0
 wsproto==1.2.0
