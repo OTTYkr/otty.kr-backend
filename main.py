@@ -85,9 +85,12 @@ async def kr_stocks_rank(response: Response, db: Session = Depends(get_db)):
 async def kr_stock_symbol(symbol: str, response: Response, db: Session = Depends(get_db)):
     response.headers['content-type'] = 'application/json; charset=utf-8;'
     meta = db.execute(select(KrStocks).filter_by(**{'symbol': symbol}).limit(1)).scalar()
-    info = TV_WS.get_kr_data(str(symbol))
-    return {
-        'meta': meta,
-        'info': info,
-    }
+    if meta is None:
+        return 'error'
+    else:
+        info = TV_WS.get_kr_data(str(symbol))
+        return {
+            'meta': meta,
+            'info': info,
+        }
 
