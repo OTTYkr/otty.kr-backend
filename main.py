@@ -9,7 +9,6 @@ from typing import List, Optional
 import datetime
 from sqlalchemy.sql import *
 from modules.tradingview_ws import TradingViewWebsocket
-import wikipedia
 
 
 # 실행 방법 : 터미널 gunicorn --bind 0:8001 main:app --worker-class uvicorn.workers.UvicornWorker
@@ -20,9 +19,6 @@ engine = EngineConn()
 session = engine.sessionmaker()
 
 TV_WS = TradingViewWebsocket()
-
-# 위키피디아 언어 설정
-wikipedia.set_lang('ko')
 
 
 def get_db():
@@ -90,10 +86,8 @@ async def kr_stock_symbol(symbol: str, response: Response, db: Session = Depends
     response.headers['content-type'] = 'application/json; charset=utf-8;'
     meta = db.execute(select(KrStocks).filter_by(**{'symbol': symbol}).limit(1)).scalar()
     info = TV_WS.get_kr_data(str(symbol))
-    summ = wikipedia.summary(meta.name)
     return {
         'meta': meta,
         'info': info,
-        'summary': summ,
     }
 
