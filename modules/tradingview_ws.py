@@ -57,11 +57,27 @@ class TradingViewWebsocket:
                     idx += 1
                     break
                 if 'm' in r and r['m'] == 'qsd':
-                    dl = list(r['p'])[1]
-                    if dl['n'] not in data:
-                        data[dl['n']] = [dl['v']]
-                    else:
-                        data[dl['n']].append(dl['v'])
+                    dl = list(r['p'])[1]['v']
+                    if 'dividends_yield_current' in dl:
+                        data['배당수익률'] = dl['dividends_yield_current']
+                    if 'float_shares_outstanding_current' in dl:
+                        data['발행주식수'] = dl['float_shares_outstanding_current']
+                    if 'net_income' in dl:
+                        data['순이익'] = dl['net_income']
+                    if 'total_revenue' in dl:
+                        data['총수익'] = dl['total_revenue']
+                    if 'sector' in dl:
+                        data['섹터'] = dl['sector']
+                    if 'industry' in dl:
+                        data['산업'] = dl['industry']
+                    if 'market_cap_basic' in dl:
+                        data['시가총액'] = dl['market_cap_basic']
+                    if 'web_site_url' in dl:
+                        data['웹사이트'] = dl['web_site_url']
+                    if 'location' in dl:
+                        data['본사지역'] = dl['location']
+                    if 'market-status' in dl:
+                        data['마켓상태'] = dl['market-status']
         '''
         for d in data:
             print("종목 : ", d)
@@ -83,4 +99,4 @@ class TradingViewWebsocket:
 
 if __name__ == "__main__":
     TV_WS = TradingViewWebsocket()
-    TV_WS.get_kr_data("005930")
+    print(TV_WS.get_kr_data("005930"))
