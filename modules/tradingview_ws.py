@@ -78,6 +78,11 @@ class TradingViewWebsocket:
                         data['본사지역'] = dl['location']
                     if 'market-status' in dl:
                         data['마켓상태'] = dl['market-status']
+                    if 'ch' in dl:
+                        data['가격변화'] = dl['ch']
+                    if 'chp' in dl:
+                        data['가격변화율'] = dl['chp']
+
         '''
         for d in data:
             print("종목 : ", d)
